@@ -25,3 +25,18 @@ async def add_user_session(user_session_data: dict):
     user_session = await user_sessions.insert_one(user_session_data)
     new_user_session = await user_sessions.find_one({"_id":user_session.inserted_id})
     return user_session_serializer(new_user_session)
+
+
+# Update User session
+
+async def update_user_session(user_session_data: list, id: str):
+
+    if not ObjectId.is_valid(id):
+        return {"Message":f"Invalid id: {id}"}
+    
+    updated_user_session = await user_sessions.update_one({"_id":ObjectId(id)}, {"$set":{user_session_data[0]:user_session_data[1]}})
+
+    if updated_user_session:
+        return {"Message": "Updated Successfully"}
+    else:
+        return {"Message":f'No post with this id: {id} found'}
