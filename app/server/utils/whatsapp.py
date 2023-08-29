@@ -1,8 +1,10 @@
 from app.server.config.config import Settings
 import requests
 
+settings = Settings()
+
 def send_whatsapp_message(phone_number, message):
-    headers = {"Authorization": Settings.WHATSAPP_TOKEN}
+    headers = {"Authorization": settings.WHATSAPP_TOKEN}
     payload = {
         "messaging_product": "whatsapp",
         "reciepient_type": "individual",
@@ -12,7 +14,7 @@ def send_whatsapp_message(phone_number, message):
             "body": message
         }
     }
-    response = requests.post(Settings.WHATSAPP_URL,
+    response = requests.post(settings.WHATSAPP_URL,
                              headers=headers, json=payload)
     response_json = response.json()
     return response_json

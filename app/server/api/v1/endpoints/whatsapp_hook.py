@@ -1,13 +1,16 @@
-from fastapi import FastAPI, APIRouter, Query, status, HTTPException
+from fastapi import FastAPI, APIRouter, Query, status, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from app.server.utils.whatsapp import send_whatsapp_message
+from app.server.utils.messages import welcome_menu
+
+import random
 
 router = APIRouter()
 
 @router.get("/")
-async def buy_electricity_webhook(hub_mode: str = Query(..., alias='hub.mode'), verify_token: str = Query(..., alias='hub.verify_token'), challenge: int = Query(..., alias='hub.challenge')):
+async def buy_electricity_webhook_verification(hub_mode: str = Query(..., alias='hub.mode'), verify_token: str = Query(..., alias='hub.verify_token'), challenge: int = Query(..., alias='hub.challenge')):
    
    VERIFY_TOKEN = "buyelectricitybot"
 
@@ -16,3 +19,34 @@ async def buy_electricity_webhook(hub_mode: str = Query(..., alias='hub.mode'), 
       return JSONResponse(content=challenge, status_code=status.HTTP_200_OK)
    else:
       raise HTTPException(detail="Forbidden", status_code=status.HTTP_403_FORBIDDEN)
+
+@router.post("/")
+async def buy_electricity_webhook(request: Request):
+   response = await request.json()
+   print(response)
+   if ('object' in response) and ('entry' in response):
+      if response['object'] == 'whatsapp_business_account':
+         try:
+            for entry in response['entry']:
+               phone_number = entry['changes'][0]['value']['metadata']['display_phone_number']
+               phone_id = entry['changes'][0]['value']['metadata']['phone_number_id']
+               profile_name = entry['changes'][0]['value']['contacts'][0]['profile']['name']
+               whatsapp_id = entry['changes'][0]['value']['contacts'][0]['wa_id']
+               from_id = entry['changes'][0]['value']['messages'][0]['from']
+               message_id = entry['changes'][0]['value']['messages'][0]['id']
+               timestamp = entry['changes'][0]['value']['messages'][0]['timestamp']
+               text = entry['changes'][0]['value']['messages'][0]['text']['body']
+
+               opening_inputs = ['hi', 'Hi', 'Hello', 'Hello', 'Hey', 'hey']
+               quit_inputs = ['q', 'Q', 'Quit', 'quit', 'QUIT']
+               opening_msg = random.choice(opening_inputs).upper()
+
+               if text in opening_inputs:
+                  bot_message = welcome_menu(profile_name, opening_msg)
+
+                  send_whatsapp_message(from_id, bot_message)
+               if text:
+                  
+
+         except Exception as e:
+            raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
