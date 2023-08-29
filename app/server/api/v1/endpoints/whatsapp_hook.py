@@ -5,7 +5,10 @@ from fastapi.responses import JSONResponse
 from app.server.utils.whatsapp import send_whatsapp_message
 from app.server.utils.messages import welcome_menu
 
+from app.server.database.crud import add_user_session, update_user_session, get_single_session
+
 import random
+from datetime import datetime
 
 router = APIRouter()
 
@@ -23,7 +26,7 @@ async def buy_electricity_webhook_verification(hub_mode: str = Query(..., alias=
 @router.post("/")
 async def buy_electricity_webhook(request: Request):
    response = await request.json()
-   print(response)
+   # print(response)
    if ('object' in response) and ('entry' in response):
       if response['object'] == 'whatsapp_business_account':
          try:
@@ -43,7 +46,16 @@ async def buy_electricity_webhook(request: Request):
 
                if text in opening_inputs:
                   bot_message = welcome_menu(profile_name, opening_msg)
-
                   send_whatsapp_message(from_id, bot_message)
+                  schema = {
+                     "user_phone_number": from_id,
+                     "user_name": profile_name,
+                     "created_at": datetime.utcnow()
+                  }
+                  new_user_session = await add_user_session(schema)
+
+               if text:
+                  if "1" in text and True:
+                     pass
          except Exception as e:
             raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
