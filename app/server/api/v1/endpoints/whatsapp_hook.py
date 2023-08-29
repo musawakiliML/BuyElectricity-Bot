@@ -45,8 +45,5 @@ async def buy_electricity_webhook(request: Request):
                   bot_message = welcome_menu(profile_name, opening_msg)
 
                   send_whatsapp_message(from_id, bot_message)
-               if text:
-                  
-
          except Exception as e:
             raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
