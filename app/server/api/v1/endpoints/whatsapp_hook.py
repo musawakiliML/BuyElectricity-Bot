@@ -14,7 +14,7 @@ from cachetools import LRUCache
 router = APIRouter()
 
 # Initialize a cache to store processed message IDs
-processed_message_ids = LRUCache(maxsize=20)  # Adjust maxsize as needed
+# processed_message_ids = LRUCache(maxsize=20)  # Adjust maxsize as needed
 
 @router.get("/")
 async def buy_electricity_webhook_verification(hub_mode: str = Query(..., alias='hub.mode'), verify_token: str = Query(..., alias='hub.verify_token'), challenge: int = Query(..., alias='hub.challenge')):
@@ -27,7 +27,7 @@ async def buy_electricity_webhook_verification(hub_mode: str = Query(..., alias=
    else:
       raise HTTPException(detail="Forbidden", status_code=status.HTTP_403_FORBIDDEN)
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_200_OK)
 async def buy_electricity_webhook(request: Request):
    response = await request.json()
    # print(response)
@@ -44,12 +44,12 @@ async def buy_electricity_webhook(request: Request):
                timestamp = entry['changes'][0]['value']['messages'][0]['timestamp']
                text = entry['changes'][0]['value']['messages'][0]['text']['body']
 
-               if message_id in processed_message_ids:
-                    continue  # Skip processing duplicate message
+               # if message_id in processed_message_ids:
+               #      continue  # Skip processing duplicate message
                
-               processed_message_ids[message_id] = True
+               # processed_message_ids[message_id] = True
 
-               opening_inputs = ['hi', 'Hi', 'Hello', 'Hello', 'Hey', 'hey']
+               opening_inputs = ['hi', 'Hi', 'hello', 'Hello', 'Hey', 'hey']
                quit_inputs = ['q', 'Q', 'Quit', 'quit', 'QUIT']
                opening_msg = random.choice(opening_inputs).upper()
 
@@ -59,13 +59,19 @@ async def buy_electricity_webhook(request: Request):
                   schema = {
                      "user_phone_number": from_id,
                      "user_name": profile_name,
+                     "message_id": message_id,
                      "created_at": datetime.utcnow()
                   }
                   new_user_session = await add_user_session(schema)
 
                if text:
-                  if "1" in text and True:
-                     pass
+                  user_session = await get_single_session(message_id)
+                  print(user_session['message_id'])
+                  print("hello")
 
-         except Exception as e:
-            raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                  if "1" in text:
+                     send_whatsapp_message(from_id, "user_session['message_id']")
+         except:
+            pass
+         # except Exception as e:
+         #    raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
