@@ -14,9 +14,9 @@ async def get_all_user_sessions():
 
 # get single session
 
-async def get_single_session(message_id: str):
-    # user_session = await user_sessions.find_one({"_id":ObjectId(id)})
-    user_session = await user_sessions.find(filter={"message_id":message_id})
+async def get_single_session(id: str):
+    user_session = await user_sessions.find_one({"_id":ObjectId(id)})
+    # user_session = await user_sessions.find(filter={"message_id":message_id})
     if user_session:
         return user_session_serializer(user_session)
 
@@ -30,15 +30,15 @@ async def add_user_session(user_session_data: dict):
 
 # Update User session
 
-async def update_user_session(user_session_data: list, message_id: str):
+async def update_user_session(user_session_data: list, id: str):
 
-    # if not ObjectId.is_valid(id):
-    #     return {"Message":f"Invalid id: {message_id}"}
+    if not ObjectId.is_valid(id):
+        return {"Message":f"Invalid id: {id}"}
     
-    # updated_user_session = await user_sessions.update_one({"_id":ObjectId(id)}, {"$set":{user_session_data[0]:user_session_data[1]}})
-    updated_user_session = await user_sessions.update_one({"message_id":message_id}, {"$set":{user_session_data[0]:user_session_data[1]}})
+    updated_user_session = await user_sessions.update_one({"_id":ObjectId(id)}, {"$set":{user_session_data[0]:user_session_data[1]}})
+    # updated_user_session = await user_sessions.update_one({"message_id":message_id}, {"$set":{user_session_data[0]:user_session_data[1]}})
 
     if updated_user_session:
         return {"Message": "Updated Successfully"}
     else:
-        return {"Message":f'No post with this id: {message_id} found'}
+        return {"Message":f'No post with this id: {id} found'}

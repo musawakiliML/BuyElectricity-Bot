@@ -7,7 +7,7 @@ class UserSessionSchema(BaseModel):
     _id: str = Field(...)
     user_phone_number: str = Field(...)
     user_name: str = Field(...)
-    message_id: str = Field(...)
+    # message_id: str = Field(...)
     user_input_1: Optional[str]
     user_input_2: Optional[str]
     user_meter_number: Optional[str]

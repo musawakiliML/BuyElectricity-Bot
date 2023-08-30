@@ -9,7 +9,6 @@ from app.server.database.crud import add_user_session, update_user_session, get_
 
 import random
 from datetime import datetime
-from cachetools import LRUCache
 
 router = APIRouter()
 
@@ -59,18 +58,17 @@ async def buy_electricity_webhook(request: Request):
                   schema = {
                      "user_phone_number": from_id,
                      "user_name": profile_name,
-                     "message_id": message_id,
+                     # "message_id": message_id,
                      "created_at": datetime.utcnow()
                   }
                   new_user_session = await add_user_session(schema)
 
                if text:
-                  user_session = await get_single_session(message_id)
-                  print(user_session['message_id'])
-                  print("hello")
+                  user_session = await get_single_session()
+                  print(user_session['_id'])
 
                   if "1" in text:
-                     send_whatsapp_message(from_id, "user_session['message_id']")
+                     send_whatsapp_message(from_id, "user_session['_id']")
          except:
             pass
          # except Exception as e:
