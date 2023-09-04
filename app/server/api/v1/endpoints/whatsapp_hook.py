@@ -2,8 +2,7 @@ from fastapi import FastAPI, APIRouter, Query, status, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from app.server.utils.whatsapp import send_whatsapp_message
-from app.server.utils.messages import welcome_menu
+from app.server.utils.chatbot_logic import handle_whatsapp_chat
 
 from app.server.database.crud import add_user_session, update_user_session, get_single_session
 
@@ -11,9 +10,6 @@ import random
 from datetime import datetime
 
 router = APIRouter()
-
-# Initialize a cache to store processed message IDs
-# processed_message_ids = LRUCache(maxsize=20)  # Adjust maxsize as needed
 
 @router.get("/")
 async def buy_electricity_webhook_verification(hub_mode: str = Query(..., alias='hub.mode'), verify_token: str = Query(..., alias='hub.verify_token'), challenge: int = Query(..., alias='hub.challenge')):
@@ -42,28 +38,9 @@ async def buy_electricity_webhook(request: Request):
                message_id = entry['changes'][0]['value']['messages'][0]['id']
                timestamp = entry['changes'][0]['value']['messages'][0]['timestamp']
                text = entry['changes'][0]['value']['messages'][0]['text']['body']
-
-
-               opening_inputs = ['hi', 'Hi', 'hello', 'Hello', 'Hey', 'hey']
-               quit_inputs = ['q', 'Q', 'Quit', 'quit', 'QUIT']
-               opening_msg = random.choice(opening_inputs).upper()
-
-               if text in opening_inputs:
-                  bot_message = welcome_menu(profile_name, opening_msg)
-                  send_whatsapp_message(from_id, bot_message)
-                  schema = {
-                     "user_phone_number": from_id,
-                     "user_name": profile_name,
-                     "created_at": datetime.utcnow()
-                  }
-                  new_user_session = await add_user_session(schema)
-
-               if text:
-                  user_session = await get_single_session()
-                  print(user_session['_id'])
-
-                  if "1" in text:
-                     send_whatsapp_message(from_id, "user_session['_id']")
+               
+               handle_whatsapp_chat(from_id, text, profile_name, phone_id)
+               
          except:
             pass
    return JSONResponse(content={}, status_code=status.HTTP_200_OK)
