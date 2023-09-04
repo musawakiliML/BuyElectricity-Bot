@@ -1,7 +1,7 @@
 from emoji import emojize
 
 def welcome_menu(profile_name: str, start_input: str):
-    message = f"{start_input}, Nice to Meet You, I'm EnergiEase Bot {emojize(':bulb:', language='alias')} from Mind Colony!\nWhat would you like to do today? \n\n{emojize(':one:', language='alias')} Buy Electricity\n{emojize(':two:', language='alias')} Customer Support\n\n Please reply with a number to choose an option(E.g 1 for Buy Electricity)"
+    message = f"{start_input}, {profile_name} Nice to Meet You, I'm EnergiEase Bot {emojize(':bulb:', language='alias')} from Mind Colony!\nWhat would you like to do today? \n\n{emojize(':one:', language='alias')} Buy Electricity\n{emojize(':two:', language='alias')} Customer Support\n\n Please reply with a number to choose an option(E.g 1 for Buy Electricity)"
 
     return message
 
@@ -40,7 +40,6 @@ def order_successful(meter_unit: str, order_id: str, meter_number: str, meter_to
     message = f"Your Order was successful!!\n You can get the details below:\n\nToken:{meter_token}\nOrder Id: {order_id}\nUnits: {meter_unit}\nMeter Number: {meter_number}\n\nThank you for choosing EnergiEase!"
 
     return message
-
 
 def order_failed(order_id: str):
     message = f"OOPs Your order has failed!!\n Please Contact Support through email with your Order Id:{order_id}. support@energieasebot.ng"

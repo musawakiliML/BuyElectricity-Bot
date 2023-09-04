@@ -43,10 +43,6 @@ async def buy_electricity_webhook(request: Request):
                timestamp = entry['changes'][0]['value']['messages'][0]['timestamp']
                text = entry['changes'][0]['value']['messages'][0]['text']['body']
 
-               # if message_id in processed_message_ids:
-               #      continue  # Skip processing duplicate message
-               
-               # processed_message_ids[message_id] = True
 
                opening_inputs = ['hi', 'Hi', 'hello', 'Hello', 'Hey', 'hey']
                quit_inputs = ['q', 'Q', 'Quit', 'quit', 'QUIT']
@@ -58,7 +54,6 @@ async def buy_electricity_webhook(request: Request):
                   schema = {
                      "user_phone_number": from_id,
                      "user_name": profile_name,
-                     # "message_id": message_id,
                      "created_at": datetime.utcnow()
                   }
                   new_user_session = await add_user_session(schema)
@@ -71,5 +66,6 @@ async def buy_electricity_webhook(request: Request):
                      send_whatsapp_message(from_id, "user_session['_id']")
          except:
             pass
+   return JSONResponse(content={}, status_code=status.HTTP_200_OK)
          # except Exception as e:
          #    raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
