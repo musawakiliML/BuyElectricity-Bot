@@ -2,7 +2,7 @@ from bson.objectid import ObjectId
 
 from app.server.database.db_connection import user_sessions
 
-from app.server.serializers.user_sessions import user_session_serializer
+from app.server.serializers.chatbot_serializers import user_session_serializer
 
 # get all sessions
 

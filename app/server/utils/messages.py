@@ -40,7 +40,6 @@ def order_successful(meter_unit: str, order_id: str, meter_number: str, meter_to
 
     return message
 
-
 def order_failed(order_id: str):
     message = f"OOPs Your order has failed!!\n Please Contact Support through email with your Order Id:{order_id}. support@energieasebot.ng"
     
