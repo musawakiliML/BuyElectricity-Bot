@@ -1,7 +1,10 @@
 from app.server.utils.messages import welcome_menu
 
 def handle_whatsapp_chat():
-    pass
+   try:
+       pass
+   except:
+       pass
 
 
 
