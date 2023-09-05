@@ -1,4 +1,11 @@
-from app.server.utils.messages import welcome_menu
+from app.server.utils.messages import *
+
+from app.server.database.crud import (
+    get_all_user_sessions,
+    get_single_session,
+    update_user_session,
+    add_user_session
+)
 
 def handle_whatsapp_chat():
    try:
