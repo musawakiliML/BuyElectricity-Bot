@@ -44,5 +44,5 @@ class UserSessionSchema(BaseModel):
     user_order_id: Optional[str]
     transaction_reference: Optional[str]
     created_at: Union[datetime, None] = None
-    user: UserSchema
+    user_profile: UserProfileSchema
 

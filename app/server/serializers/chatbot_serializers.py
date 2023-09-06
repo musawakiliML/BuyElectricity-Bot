@@ -16,7 +16,7 @@ def user_session_serializer(input) -> dict:
         "user_order_id": input["user_order_id"],
         "transaction_reference": input["transaction_reference"],
         "created_at": str(input["created_at"]),
-        "user": input["user"]
+        "user_profile": input["user_profile"]
     }
 
 def user_serializer(input) -> dict:

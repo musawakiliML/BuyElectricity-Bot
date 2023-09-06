@@ -18,9 +18,11 @@ from app.server.serializers.chatbot_serializers import (
 
 async def get_single_session(session_id: str):
     # user_session = await user_sessions.find_one({"_id":ObjectId(id)})
-    user_session = await user_sessions.find(filter={"session_id":session_id})
+    user_session = await user_sessions.find_one({"session_id":session_id})
     if user_session:
         return user_session_serializer(user_session)
+    else:
+        return {"message":"not_found"}
 
 # Add user session
 
@@ -48,7 +50,7 @@ async def update_user_session(user_session_data: list, session_id: str):
 
 async def delete_single_session(session_id: str):
     # user_session = await user_sessions.find_one({"_id":ObjectId(id)})
-    await user_sessions.delete_one(filter={"session_id":session_id})
+    await user_sessions.delete_one({"session_id":session_id})
     return {"Message":"Session Deleted Successfully!"}
 
 # Create user
@@ -62,9 +64,11 @@ async def create_user(user_data: dict):
 # Retrieve User
 
 async def get_user(session_id: str):
-    user = await users.find(filter={"session_id":session_id})
+    user = await users.find_one({"username":session_id})
     if user:
         return user_serializer(user)
+    # else:
+    #     return {"message":"not_found"}
 
 # Create user profile
 
@@ -76,9 +80,11 @@ async def create_user_profile(user_profile_data: dict):
 # get user Profile
 
 async def get_user_profile(session_id: str):
-    user_profile = await user_profiles.find(filter={"phone_id":session_id})
+    user_profile = await user_profiles.find_one({"phone_id":session_id})
     if user_profile:
         return user_profile_serializer(user_profile)
+    else:
+        return {"message":"not_found"}
 
 # Create order
 
