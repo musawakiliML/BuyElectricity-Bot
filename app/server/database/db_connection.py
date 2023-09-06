@@ -23,4 +23,4 @@ database = client.buyelectricity
 user_sessions = database.get_collection("user_session")
 user_orders = database.get_collection("orders")
 users = database.get_collection("users")
-user_profile = database.get_collection("user_profile")
+user_profiles = database.get_collection("user_profile")

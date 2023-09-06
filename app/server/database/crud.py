@@ -3,19 +3,16 @@ from bson.objectid import ObjectId
 from app.server.database.db_connection import (
     user_sessions,
     user_orders,
-    user_profile,
+    user_profiles,
     users
     )
 
-from app.server.serializers.chatbot_serializers import user_session_serializer
-
-# get all sessions
-
-async def get_all_user_sessions():
-    user_sessions_data = []
-    async for session in user_sessions.find():
-        user_sessions_data.append(user_session_serializer(session))
-        return user_sessions_data
+from app.server.serializers.chatbot_serializers import (
+    user_session_serializer,
+    user_profile_serializer,
+    user_serializer,
+    order_serializer
+    )
 
 # get single session
 
@@ -31,7 +28,6 @@ async def add_user_session(user_session_data: dict):
     user_session = await user_sessions.insert_one(user_session_data)
     new_user_session = await user_sessions.find_one({"_id":user_session.inserted_id})
     return user_session_serializer(new_user_session)
-
 
 # Update User session
 
@@ -52,23 +48,41 @@ async def update_user_session(user_session_data: list, session_id: str):
 
 async def delete_single_session(session_id: str):
     # user_session = await user_sessions.find_one({"_id":ObjectId(id)})
-    user_session = await user_sessions.find(filter={"session_id":session_id})
-    if user_session:
-        return user_session_serializer(user_session)
-
+    await user_sessions.delete_one(filter={"session_id":session_id})
+    return {"Message":"Session Deleted Successfully!"}
 
 # Create user
-async def create_user(user_data):
+
+async def create_user(user_data: dict):
     user = await users.insert_one(user_data)
-    new_user = await user_sessions.find_one({"_id":user_session.inserted_id})
-    return user_session_serializer(new_user_session)
+    new_user = await users.find_one({"_id":user.inserted_id})
+    return user_serializer(new_user)
 
 
 # Retrieve User
 
+async def get_user(session_id: str):
+    user = await users.find(filter={"session_id":session_id})
+    if user:
+        return user_serializer(user)
+
 # Create user profile
+
+async def create_user_profile(user_profile_data: dict):
+    user_profile = await user_profiles.insert_one(user_profile_data)
+    new_user_profile = await user_profiles.find_one({"_id":user_profile.inserted_id})
+    return user_profile_serializer(new_user_profile)
 
 # get user Profile
 
+async def get_user_profile(session_id: str):
+    user_profile = await user_profiles.find(filter={"phone_id":session_id})
+    if user_profile:
+        return user_profile_serializer(user_profile)
+
 # Create order
 
+async def create_order(user_order_data: dict):
+    order = await user_orders.insert_one(user_order_data)
+    new_order = await user_orders.find_one({"_id":order.inserted_id})
+    return order_serializer(new_order)
