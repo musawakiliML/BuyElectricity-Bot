@@ -40,9 +40,9 @@ async def buy_electricity_webhook(request: Request):
                text = entry['changes'][0]['value']['messages'][0]['text']['body']
                
                handle_whatsapp_chat(from_id, text, profile_name, phone_id)
-               
+            return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)   
          except:
             pass
-   return JSONResponse(content={}, status_code=status.HTTP_200_OK)
+   return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)
          # except Exception as e:
          #    raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)

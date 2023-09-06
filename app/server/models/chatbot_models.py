@@ -27,6 +27,7 @@ class OrdersSchema(BaseModel):
     payment_mode: Optional[str]
     user_order_id: Optional[str]
     transaction_reference: Optional[str]
+    created_at: Union[datetime, None] = None
 
 class UserSessionSchema(BaseModel):
     _id: str = Field(...)

@@ -1,6 +1,11 @@
 from bson.objectid import ObjectId
 
-from app.server.database.db_connection import user_sessions
+from app.server.database.db_connection import (
+    user_sessions,
+    user_orders,
+    user_profile,
+    users
+    )
 
 from app.server.serializers.chatbot_serializers import user_session_serializer
 
@@ -50,3 +55,20 @@ async def delete_single_session(session_id: str):
     user_session = await user_sessions.find(filter={"session_id":session_id})
     if user_session:
         return user_session_serializer(user_session)
+
+
+# Create user
+async def create_user(user_data):
+    user = await users.insert_one(user_data)
+    new_user = await user_sessions.find_one({"_id":user_session.inserted_id})
+    return user_session_serializer(new_user_session)
+
+
+# Retrieve User
+
+# Create user profile
+
+# get user Profile
+
+# Create order
+
