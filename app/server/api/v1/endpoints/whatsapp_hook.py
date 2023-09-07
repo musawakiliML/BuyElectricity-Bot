@@ -27,38 +27,23 @@ async def buy_electricity_webhook(request: Request):
    # print(response)
    if ('object' in response) and ('entry' in response):
       if response['object'] == 'whatsapp_business_account':
-         for entry in response['entry']:
-            phone_number = entry['changes'][0]['value']['metadata']['display_phone_number']
-            phone_id = entry['changes'][0]['value']['metadata']['phone_number_id']
-            profile_name = entry['changes'][0]['value']['contacts'][0]['profile']['name']
-            whatsapp_id = entry['changes'][0]['value']['contacts'][0]['wa_id']
-            from_id = entry['changes'][0]['value']['messages'][0]['from']
-            message_id = entry['changes'][0]['value']['messages'][0]['id']
-            timestamp = entry['changes'][0]['value']['messages'][0]['timestamp']
-            text = entry['changes'][0]['value']['messages'][0]['text']['body']
-            
-            await handle_whatsapp_chat(from_id, text, profile_name, phone_id)
-   return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)
-   
-
-
-   #       try:
-   #          for entry in response['entry']:
-   #             phone_number = entry['changes'][0]['value']['metadata']['display_phone_number']
-   #             phone_id = entry['changes'][0]['value']['metadata']['phone_number_id']
-   #             profile_name = entry['changes'][0]['value']['contacts'][0]['profile']['name']
-   #             whatsapp_id = entry['changes'][0]['value']['contacts'][0]['wa_id']
-   #             from_id = entry['changes'][0]['value']['messages'][0]['from']
-   #             message_id = entry['changes'][0]['value']['messages'][0]['id']
-   #             timestamp = entry['changes'][0]['value']['messages'][0]['timestamp']
-   #             text = entry['changes'][0]['value']['messages'][0]['text']['body']
+         try:
+            for entry in response['entry']:
+               phone_number = entry['changes'][0]['value']['metadata']['display_phone_number']
+               phone_id = entry['changes'][0]['value']['metadata']['phone_number_id']
+               profile_name = entry['changes'][0]['value']['contacts'][0]['profile']['name']
+               whatsapp_id = entry['changes'][0]['value']['contacts'][0]['wa_id']
+               from_id = entry['changes'][0]['value']['messages'][0]['from']
+               message_id = entry['changes'][0]['value']['messages'][0]['id']
+               timestamp = entry['changes'][0]['value']['messages'][0]['timestamp']
+               text = entry['changes'][0]['value']['messages'][0]['text']['body']
                
-   #             handle_whatsapp_chat(from_id, text, profile_name, phone_id)
-   #          # return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)   
-   #       except Exception as e:
-   #          # return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)
-   #          # raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-   #          pass
-   # return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)
-   #       # except Exception as e:
-   #       #    raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+               await handle_whatsapp_chat(from_id, text, profile_name, phone_id)
+            return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)   
+         except Exception as e:
+            # return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)
+            # raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            pass
+   return JSONResponse(content={"message":"Success"}, status_code=status.HTTP_200_OK)
+         # except Exception as e:
+         #    raise HTTPException(detail=str(e), status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)

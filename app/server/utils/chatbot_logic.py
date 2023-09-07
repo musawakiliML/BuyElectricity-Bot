@@ -1,8 +1,16 @@
 from datetime import datetime
 import random
+from bson.objectid import ObjectId
 
 from app.server.utils.messages import *
 from app.server.utils.whatsapp import send_whatsapp_message
+
+from app.server.models.chatbot_models import (
+    UserSchema,
+    UserProfileSchema,
+    UserSessionSchema,
+    OrdersSchema
+    )
 
 from app.server.database.crud import (
     get_single_session,
@@ -17,49 +25,59 @@ from app.server.database.crud import (
 )
 
 async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
-    # print(text)
-   # Check if session exists
     try:
+    #    print("Here")
+       # Check if session exists
        get_chat = await get_single_session(phoneid)
-       if get_chat['phone_number'] == phonenumber:
+       if get_chat['user_phone_number'] == phonenumber:
            chat = get_chat
+        #    print(chat)
     except:
-        # print("here")
+        created_at = datetime.utcnow()
+        # print("Inside Except!")
         user = await get_user(phoneid)
-        # print("after")
+        # print("After getting user!")
         if user:
             if user["username"] == phoneid:
                 user = user
                 user_profile = await get_user_profile(phoneid)
         else:
-        # print("next")
+            # print("Creating New user!")
            # Create User
-           created_at = datetime.utcnow()
-           user_data = {
+            user_data = {
                "username":phoneid,
                "first_name": profilename,
                "email": "chat@energieasebot.ng",
                "created_at": created_at
            }
-           user = await create_user(user_data)
-
+            user = await create_user(user_data)
+            # print("After Creating user!!")
            # Create User Profile
-           user_profile_data = {
+            user_profile_data = {
                "phone_number": phonenumber,
                "phone_id": phoneid,
                "user": user,
                "created_at": created_at
            }
-           user_profile = await create_user_profile(user_profile_data)
-
+            user_profile = await create_user_profile(user_profile_data)
+            # print("After Creating User Profile")
+        
         # Create Chat Session
-        chat_session_data = {
-            "session_id": phoneid,
-            "user_phone_number": phonenumber,
-            "user_name": profilename,
-            "user_profile": user_profile
-        }
-        chat = await add_user_session(chat_session_data)
+        # print("Before add_user_session")
+        try:
+            chat_session_data = UserSessionSchema(
+            _id=str(ObjectId()),
+            session_id=phoneid,
+            user_phone_number=phonenumber,
+            user_name=profilename,
+            user_profile=user_profile,
+            created_at=str(created_at)
+            )
+
+            chat = await add_user_session(chat_session_data)
+            # print("After add_user_session")
+        except Exception as e:
+            print(f"Exception in add_user_session: {str(e)}")
 
         opening = ['hi', 'Hi', 'Hello', 'Hello', 'Hey', 'hey']
         opening_msg = random.choice(opening).upper()
@@ -68,12 +86,62 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
             message = welcome_menu(opening_msg, profilename)
             send_whatsapp_message(phonenumber, message)
     
-    # quit_inputs = ['q', 'Q', 'Quit', 'quit', 'QUIT']
+    quit_inputs = ['q', 'Q', 'Quit', 'quit', 'QUIT']
 
-    # # Conversation Logic
+    # Conversation Logic
 
-    # if chat["entry_message"]:
-    #     pass
-    # else:
-    #     update_data = ["entry_message", opening_msg]
-    #     data = await update_user_session(update_data, phoneid)
+    if chat["entry_message"]:
+        if chat["user_input_1"]:
+            if chat["user_input_2"]:
+                pass
+            else:
+                try:
+                    check_type = int(text.replace(' ', ''))
+                    if check_type == 1:
+                        update_data = ["user_input_1", text]
+                        data = await update_user_session(update_data, phoneid)
+                        message = options_menu()
+                        send_whatsapp_message(phonenumber, message)
+                    elif check_type == 2:
+                        update_data = ["user_input_1", text]
+                        data = await update_user_session(update_data, phoneid)
+                        message = customer_support()
+                        send_whatsapp_message(phonenumber, message)
+                    else:
+                        message = "Oops 😓 Please Enter a Number:"
+                        send_whatsapp_message(phonenumber, message)
+                except:
+                    if text in quit_inputs:
+                        message = quit_chat()
+                        send_whatsapp_message(phonenumber, message)
+                        await delete_single_session(phoneid)
+                    else:
+                        message = "Oops 😓 Please Enter a Number:"
+                        send_whatsapp_message(phonenumber, message)
+        else:
+            try:
+                check_type = int(text.replace(' ', ''))
+                if check_type == 1:
+                    update_data = ["user_input_1", text]
+                    data = await update_user_session(update_data, phoneid)
+                    message = options_menu()
+                    send_whatsapp_message(phonenumber, message)
+                elif check_type == 2:
+                    update_data = ["user_input_1", text]
+                    data = await update_user_session(update_data, phoneid)
+                    message = customer_support()
+                    send_whatsapp_message(phonenumber, message)
+                else:
+                    message = "Oops 😓 Please Enter a Number:"
+                    send_whatsapp_message(phonenumber, message)
+            except:
+                if text in quit_inputs:
+                    message = quit_chat()
+                    send_whatsapp_message(phonenumber, message)
+                    await delete_single_session(phoneid)
+                else:
+                    message = "Oops 😓 Please Enter a Number:"
+                    send_whatsapp_message(phonenumber, message)
+    else:
+        update_data = ["entry_message", opening_msg]
+        data = await update_user_session(update_data, phoneid)

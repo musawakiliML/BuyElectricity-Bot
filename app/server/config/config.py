@@ -4,6 +4,8 @@ class Settings(BaseSettings):
    MONGODB_URL: str
    WHATSAPP_URL: str
    WHATSAPP_TOKEN: str
+   NGROK_URL: str
+   
 
    class Config:
       env_file = '.env'

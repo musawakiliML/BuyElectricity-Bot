@@ -1,5 +1,12 @@
 from bson.objectid import ObjectId
 
+from app.server.models.chatbot_models import (
+    UserSchema,
+    UserProfileSchema,
+    UserSessionSchema,
+    OrdersSchema
+    )
+
 from app.server.database.db_connection import (
     user_sessions,
     user_orders,
@@ -19,6 +26,7 @@ from app.server.serializers.chatbot_serializers import (
 async def get_single_session(session_id: str):
     # user_session = await user_sessions.find_one({"_id":ObjectId(id)})
     user_session = await user_sessions.find_one({"session_id":session_id})
+    # print(user_session)
     if user_session:
         return user_session_serializer(user_session)
     else:
@@ -26,19 +34,21 @@ async def get_single_session(session_id: str):
 
 # Add user session
 
-async def add_user_session(user_session_data: dict):
-    user_session = await user_sessions.insert_one(user_session_data)
-    new_user_session = await user_sessions.find_one({"_id":user_session.inserted_id})
-    return user_session_serializer(new_user_session)
+async def add_user_session(user_session_data: UserSessionSchema):
+    user_session_data = user_session_data.model_dump()
+    # print(user_session_data)
+    try:
+        user_session = await user_sessions.insert_one(user_session_data)
+        new_user_session = await user_sessions.find_one({"_id": user_session.inserted_id})
+        if new_user_session:
+            return user_session_serializer(new_user_session)
+    except Exception as e:
+        print(f"Error in add_user_session: {str(e)}")
+        raise
 
 # Update User session
 
 async def update_user_session(user_session_data: list, session_id: str):
-
-    # if not ObjectId.is_valid(id):
-    #     return {"Message":f"Invalid id: {id}"}
-    
-    # updated_user_session = await user_sessions.update_one({"_id":ObjectId(id)}, {"$set":{user_session_data[0]:user_session_data[1]}})
     updated_user_session = await user_sessions.update_one({"session_id":session_id}, {"$set":{user_session_data[0]:user_session_data[1]}})
 
     if updated_user_session:

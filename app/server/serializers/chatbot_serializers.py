@@ -44,7 +44,7 @@ def order_serializer(input) -> dict:
     return {
         "_id": str(input["_id"]),
         "user_profile": input["user_profile"],
-        "meter_distrubution": input["meter_distrubution"],
+        "meter_distribution": input["meter_distribution"],
         "user_meter_number": input["user_meter_number"],
         "user_amount": input["user_amount"],
         "payment_confirmation": input["payment_confirmation"],

@@ -3,46 +3,46 @@ from typing import Optional, Union
 from datetime import datetime
 
 class UserSchema(BaseModel):
-    _id: str = Field(...)
+    id: str = Field(..., alias="_id")
     username: str = Field(...)
     first_name: str = Field(...)
     email: str = Field(...)
     created_at: Union[datetime, None] = None
 
 class UserProfileSchema(BaseModel):
-    _id: str = Field(...)
+    id: str = Field(..., alias="_id")
     phone_number: str = Field(...)
     phone_id: str = Field(...)
     user: UserSchema
     created_at: Union[datetime, None] = None
 
 class OrdersSchema(BaseModel):
-    _id: str = Field(...)
+    id: str = Field(..., alias="_id")
     user_profile: UserProfileSchema
-    meter_distrubution: Optional[str]
-    user_meter_number: Optional[str]
-    user_amount: Optional[str]
-    payment_confirmation: Optional[str]
-    unit_confirmation: Optional[str]
-    payment_mode: Optional[str]
-    user_order_id: Optional[str]
-    transaction_reference: Optional[str]
+    meter_distribution: str = None
+    user_meter_number: str = None
+    user_amount: str = None
+    payment_confirmation: str = None
+    unit_confirmation: str = None
+    payment_mode: str = None
+    user_order_id: str = None
+    transaction_reference: str = None
     created_at: Union[datetime, None] = None
 
 class UserSessionSchema(BaseModel):
-    _id: str = Field(...)
+    id: str = Field(..., alias="_id")
     session_id: str = Field(...)
     user_phone_number: str = Field(...)
     user_name: str = Field(...)
-    entry_message: Optional[str]
-    user_input_1: Optional[str]
-    user_input_2: Optional[str]
-    user_meter_number: Optional[str]
-    user_amount: Optional[str]
-    user_confirm: Optional[str]
-    payment_mode: Optional[str]
-    user_order_id: Optional[str]
-    transaction_reference: Optional[str]
+    entry_message: str = None
+    user_input_1: str = None
+    user_input_2: str = None
+    user_meter_number: str = None
+    user_amount: str = None
+    user_confirm: str = None
+    payment_mode: str = None
+    user_order_id: str = None
+    transaction_reference: str = None
     created_at: Union[datetime, None] = None
     user_profile: UserProfileSchema
 
