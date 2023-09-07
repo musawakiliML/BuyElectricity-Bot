@@ -50,9 +50,11 @@ async def add_user_session(user_session_data: UserSessionSchema):
 
 async def update_user_session(user_session_data: list, session_id: str):
     updated_user_session = await user_sessions.update_one({"session_id":session_id}, {"$set":{user_session_data[0]:user_session_data[1]}})
+    updated_session = await user_sessions.find_one({"session_id":session_id})
 
     if updated_user_session:
-        return {"Message": "Updated Successfully"}
+        # print(updated_session)
+        return user_session_serializer(updated_session)
     else:
         return {"Message":f'No post with this id: {id} found'}
 

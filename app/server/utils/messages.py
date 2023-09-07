@@ -20,8 +20,8 @@ def bill_amount():
 
     return message
 
-def order_summary(owner: str, amount: int, meter_number: str, package: str, address: str):
-    message = f"Hurray!, Here is your order summary:\n\n Meter Owner: {owner}\nMeter No: {meter_number}\nAddress: {address}\nPackage: {package}\n\n Amount {emojize(':dollar:', language='alias')}: N {amount}\n Service Fee: N 100\n\n{emojize(':one:', language='alias')} Confirm Order\n\n To Confirm order please reply with 1."
+def order_summary(owner: str, amount: str, meter_number: str, package: str, address: str):
+    message = f"Hurray!, Here is your order summary:\n\n Meter Owner: {owner}\nMeter No: {meter_number}\nAddress: {address}\nPackage: {package}\n\n Amount {emojize(':dollar:', language='alias')}: ₦ {amount}\n Service Fee: ₦ 100\n\n{emojize(':one:', language='alias')} Confirm Order\n\n To Confirm order please reply with 1."
 
     return message
 
