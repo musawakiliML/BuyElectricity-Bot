@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 
 from app.server.utils.messages import *
 from app.server.utils.whatsapp import send_whatsapp_message
+from app.server.utils.payment import init_transaction, init_bank_transfer
 
 from app.server.models.chatbot_models import (
     UserSchema,
@@ -110,11 +111,23 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                                     update_data = ["user_confirm", text]
                                     data = await update_user_session(update_data, phoneid)
                                     # Generate Payment Details
-                                    account_name = ""
-                                    account_number = ""
-                                    bank_name = ""
+
+                                    # Initialize Transaction
+                                    transaction_reference = init_transaction(
+                                        int(data["user_amount"])
+                                    )
+                                    # Save Transaction reference
+                                    await update_user_session(["transaction_reference", transaction_reference])
+
+                                    # Get Bank Transfer Details
+                                    bank_transfer_details = init_bank_transfer(transaction_reference)
+
+                                    account_number = bank_transfer_details['Account Number']
+                                    account_name = bank_transfer_details['Account Name']
+                                    bank_name = bank_transfer_details['Bank Name']
                     
                                     message = order_payment(data["user_amount"], account_number, account_name, bank_name)
+                                    await update_user_session(["payment_mode", "Bank Transfer"])
                                     send_whatsapp_message(phonenumber, message)
                                 elif check_type == 2:
                                     message = quit_chat()
