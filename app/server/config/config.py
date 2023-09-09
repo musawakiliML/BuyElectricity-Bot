@@ -8,6 +8,7 @@ class Settings(BaseSettings):
    MONNIFY_SECRET_KEY: str
    MONNIFY_CONTRACT_CODE: str
    MONNIFY_WALLET_ACCOUNT_NO: str
+   MONNIFY_IP: str
    NGROK_URL: str
    
    class Config:

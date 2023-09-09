@@ -117,7 +117,7 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                                         int(data["user_amount"])
                                     )
                                     # Save Transaction reference
-                                    await update_user_session(["transaction_reference", transaction_reference])
+                                    await update_user_session(["transaction_reference", transaction_reference], phoneid)
 
                                     # Get Bank Transfer Details
                                     bank_transfer_details = init_bank_transfer(transaction_reference)
@@ -127,7 +127,7 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                                     bank_name = bank_transfer_details['Bank Name']
                     
                                     message = order_payment(data["user_amount"], account_number, account_name, bank_name)
-                                    await update_user_session(["payment_mode", "Bank Transfer"])
+                                    await update_user_session(["payment_mode", "Bank Transfer"], phoneid)
                                     send_whatsapp_message(phonenumber, message)
                                 elif check_type == 2:
                                     message = quit_chat()
