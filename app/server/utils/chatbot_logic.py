@@ -95,7 +95,42 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
             if chat["user_input_2"]:
                 if chat["user_meter_number"]:
                     if chat["user_amount"]:
-                        pass
+                        if chat["user_confirm"]:
+                            if text in quit_inputs:
+                                message = quit_chat()
+                                await delete_single_session(phoneid)
+                                send_whatsapp_message(phonenumber, message)
+                            else:
+                                message = "We are Already Processing Your Order!!!"
+                                send_whatsapp_message(phonenumber, message)
+                        else:
+                            try:
+                                check_type = int(text.replace(' ', ''))
+                                if check_type == 1:
+                                    update_data = ["user_confirm", text]
+                                    data = await update_user_session(update_data, phoneid)
+                                    # Generate Payment Details
+                                    account_name = ""
+                                    account_number = ""
+                                    bank_name = ""
+                    
+                                    message = order_payment(data["user_amount"], account_number, account_name, bank_name)
+                                    send_whatsapp_message(phonenumber, message)
+                                elif check_type == 2:
+                                    message = quit_chat()
+                                    await delete_single_session(phoneid)
+                                    send_whatsapp_message(phonenumber, message)
+                                else:
+                                    message = "Oops 😓 Please Enter a Valid Input:"
+                                    send_whatsapp_message(phonenumber, message)
+                            except:
+                                if text in quit_inputs:
+                                    message = quit_chat()
+                                    send_whatsapp_message(phonenumber, message)
+                                    await delete_single_session(phoneid)
+                                else:
+                                    message = "Oops 😓 Please Enter a Valid Amount:"
+                                    send_whatsapp_message(phonenumber, message)
                     else:
                         try:
                             check_type = int(text.replace(' ',''))
@@ -109,6 +144,9 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                                         data["meter_package"],
                                         data["meter_address"]
                                 )
+                                send_whatsapp_message(phonenumber, message)
+                            else:
+                                message = "Oops 😓 Please Enter a Valid Amount:"
                                 send_whatsapp_message(phonenumber, message)
                         except:
                             if text in quit_inputs:

@@ -16,32 +16,32 @@ def meter_number():
     return message
 
 def bill_amount():
-    message = f"Great! how much {emojize(':battery:', language='alias')} electricity unit (in naira) do you want to buy {emojize(':dollar:', language='alias')}?\n\n {emojize(':heavy_exclamation_mark:', language='alias')} Note: \n\n The minimun order amount should be N1000.0\nA service fee of N100 will be added to the amount."
+    message = f"Great! how much {emojize(':battery:', language='alias')} electricity unit (in naira) do you want to buy {emojize(':dollar:', language='alias')}?\n\n{emojize(':heavy_exclamation_mark:', language='alias')}Note: The minimun order amount should be N1000.0\nA service fee of N100 will be added to the amount."
 
     return message
 
 def order_summary(owner: str, amount: str, meter_number: str, package: str, address: str):
-    message = f"Hurray!, Here is your order summary:\n\n Meter Owner: {owner}\nMeter No: {meter_number}\nAddress: {address}\nPackage: {package}\n\n Amount {emojize(':dollar:', language='alias')}: ₦ {amount}\n Service Fee: ₦ 100\n\n{emojize(':one:', language='alias')} Confirm Order\n\n To Confirm order please reply with 1."
+    message = f"Hurray!, Here is your order summary:\n\n\t👤 Meter Owner:{owner}\n\t🔢 Meter No: {meter_number}\n\t📍 Address: {address}\n\t📦 Package: {package}\n\n\t💵 Amount {emojize(':dollar:', language='alias')}: ₦ {amount}\n\tService Fee: ₦ 100\n\n{emojize(':one:', language='alias')} Confirm Order ✔️ \n\n{emojize(':two:', language='alias')} Cancel Order ❌ \n\n To Confirm order please reply with 1."
 
     return message
 
 def order_payment(amount: str, account_number: int, account_name: str, bank_name: str):
-    message = f"Fabulous!! Please send [{amount}] to:\nAccount number: {account_number}\nAccount name: {account_name}\nBank name: {bank_name}\nYour request would be processed automatically once we recieved your payment."
+    message = f"Fabulous!! Please send 💵 {amount} to:\n\n\tAccount number: {account_number}\n\tAccount name: {account_name}\n\tBank name: {bank_name}\n\n ⌛ Your request would be processed automatically once we recieved your payment."
 
     return message
 
 def order_confirmation(order_id: str):
-    message = f"Fantastic!! Your order has been recieved.\nOrder Id:{order_id} \n We are processing it."
+    message = f"Fantastic!! Your order has been recieved.✅\nOrder Id:{order_id} \n ⌛ We are processing it."
 
     return message
 
 def order_successful(meter_unit: str, order_id: str, meter_number: str, meter_token: str):
-    message = f"Your Order was successful!!\n You can get the details below:\n\nToken:{meter_token}\nOrder Id: {order_id}\nUnits: {meter_unit}\nMeter Number: {meter_number}\n\nThank you for choosing EnergiEase!"
+    message = f"Your Order was successful!! 🎉\n You can get the details below:\n\n\tToken:{meter_token}\n\tOrder Id: {order_id}\n\tUnits: {meter_unit}\n\tMeter Number: {meter_number}\n\nThank you for choosing EnergiEase!🤗"
 
     return message
 
 def order_failed(order_id: str):
-    message = f"OOPs Your order has failed!!\n Please Contact Support through email with your Order Id:{order_id}. support@energieasebot.ng"
+    message = f"OOPs ❌ Your order has failed!!\n Please Contact Support through email with your Order Id:{order_id}. support@energieasebot.ng"
     return message
 
 def customer_support():
