@@ -8,6 +8,7 @@ colorama==0.4.6
 dnspython==2.4.2
 emoji==2.8.0
 fastapi==0.102.0
+greenlet==2.0.2
 gunicorn==21.2.0
 h11==0.14.0
 idna==3.4
@@ -20,8 +21,8 @@ pymongo==4.5.0
 python-dotenv==1.0.0
 requests==2.31.0
 sniffio==1.3.0
+SQLAlchemy==1.4.49
 starlette==0.27.0
-teamapt-monnify==1.1.1
 typing_extensions==4.7.1
 urllib3==2.0.4
 uuid==1.30

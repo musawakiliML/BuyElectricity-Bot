@@ -12,7 +12,6 @@ class GetBaseUrl:
             return 'https://api.monnify.com'
         elif self.live == False:
             return 'https://sandbox.monnify.com'
-        
         else:
             # print(self.live)
             return 'live can either be True or False'

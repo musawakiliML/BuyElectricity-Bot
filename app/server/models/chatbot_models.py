@@ -25,6 +25,7 @@ class OrdersSchema(BaseModel):
     meter_address: str = None
     meter_package: str = None
     user_amount: str = None
+    meter_type: str = None
     payment_confirmation: str = None
     unit_confirmation: str = None
     token: str = None
@@ -45,6 +46,7 @@ class UserSessionSchema(BaseModel):
     meter_address: str = None
     meter_package: str = None
     user_meter_number: str = None
+    meter_type: str = None
     meter_distribution: str = None
     user_amount: str = None
     user_confirm: str = None
