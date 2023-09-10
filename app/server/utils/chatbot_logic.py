@@ -197,46 +197,55 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "AEDC"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 2:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "EEDC"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 3:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "EKEDC"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 4:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "IBEDCO"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 5:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "IKEDC"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 6:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "JED"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 7:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "KAEDCO"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 8:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "KEDCO"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     elif check_type == 9:
                         update_data = ["user_input_2", text]
                         await update_user_session(update_data, phoneid)
                         message = meter_number()
+                        await update_user_session(["meter_distribution", "PHED"], phoneid)
                         send_whatsapp_message(phonenumber, message)
                     else:
                         message = "Oops 😓 Please Enter a Number:"

@@ -27,8 +27,9 @@ class OrdersSchema(BaseModel):
     user_amount: str = None
     payment_confirmation: str = None
     unit_confirmation: str = None
+    token: str = None
+    units: str = None
     payment_mode: str = None
-    user_order_id: str = None
     transaction_reference: str = None
     created_at: Union[datetime, None] = None
 
@@ -44,10 +45,10 @@ class UserSessionSchema(BaseModel):
     meter_address: str = None
     meter_package: str = None
     user_meter_number: str = None
+    meter_distribution: str = None
     user_amount: str = None
     user_confirm: str = None
     payment_mode: str = None
-    user_order_id: str = None
     transaction_reference: str = None
     created_at: Union[datetime, None] = None
     user_profile: UserProfileSchema

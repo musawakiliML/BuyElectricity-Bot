@@ -9,6 +9,9 @@ class Settings(BaseSettings):
    MONNIFY_CONTRACT_CODE: str
    MONNIFY_WALLET_ACCOUNT_NO: str
    MONNIFY_IP: str
+   VTPASS_API_KEY: str
+   VTPASS_PUBLIC_KEY: str
+   VTPASS_SECRET_KEY: str
    NGROK_URL: str
    
    class Config:

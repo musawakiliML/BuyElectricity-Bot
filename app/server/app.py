@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # API Routes
 from app.server.api.v1.endpoints.whatsapp_hook import router as Webhhook_router
+from app.server.api.v1.endpoints.monnify_hook import router as Monnify_Router
 
 app = FastAPI()
 
@@ -15,3 +16,4 @@ app.add_middleware(
 )
 
 app.include_router(Webhhook_router, tags=["WhatsApp Webhooks"], prefix='/buyelectricityhook')
+app.include_router(Monnify_Router, tags=["Monnify Webhook"], prefix='/monnifywebhook')

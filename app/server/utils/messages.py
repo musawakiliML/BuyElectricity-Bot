@@ -6,7 +6,7 @@ def welcome_menu(profile_name: str, start_input: str):
     return message
 
 def options_menu():
-    message = f"That's perfect!! {emojize(':thumbsup:', language='alias')} Choose from the Distribution Companies available below:\n\n{emojize(':one:', language='alias')} AEDC\n{emojize(':two:', language='alias')} EEDC\n{emojize(':three:', language='alias')} EKEDC\n{emojize(':four:', language='alias')} IBEDCO\n{emojize(':five:', language='alias')} IE\n{emojize(':six:', language='alias')} JED\n{emojize(':seven:', language='alias')} KAEDCO\n{emojize(':eight:', language='alias')} KEDCO\n{emojize(':nine:', language='alias')} PHED\n\n Please reply with a number to choose an option(E.g 1 for AEDC)"
+    message = f"That's perfect!! {emojize(':thumbsup:', language='alias')} Choose from the Distribution Companies available below:\n\n{emojize(':one:', language='alias')} AEDC\n{emojize(':two:', language='alias')} EEDC\n{emojize(':three:', language='alias')} EKEDC\n{emojize(':four:', language='alias')} IBEDCO\n{emojize(':five:', language='alias')} IKEDC\n{emojize(':six:', language='alias')} JED\n{emojize(':seven:', language='alias')} KAEDCO\n{emojize(':eight:', language='alias')} KEDCO\n{emojize(':nine:', language='alias')} PHED\n\n Please reply with a number to choose an option(E.g 1 for AEDC)"
 
     return message
 
@@ -31,7 +31,7 @@ def order_payment(amount: str, account_number: int, account_name: str, bank_name
     return message
 
 def order_confirmation(order_id: str):
-    message = f"Fantastic!! Your order has been recieved.✅\nOrder Id:{order_id} \n ⌛ We are processing it."
+    message = f"Fantastic!! Your order has been recieved.✅\n\n\tOrder Id:{order_id}\n⌛ We are processing it."
 
     return message
 

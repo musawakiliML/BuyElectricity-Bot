@@ -32,6 +32,15 @@ async def get_single_session(session_id: str):
     else:
         return {"message":"not_found"}
 
+async def get_single_session_transaction(transaction_reference: str):
+    # user_session = await user_sessions.find_one({"_id":ObjectId(id)})
+    user_session = await user_sessions.find_one({"transaction_reference":transaction_reference})
+    # print(user_session)
+    if user_session:
+        return user_session_serializer(user_session)
+    else:
+        return {"message":"not_found"}
+
 # Add user session
 
 async def add_user_session(user_session_data: UserSessionSchema):

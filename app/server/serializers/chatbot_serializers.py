@@ -13,10 +13,10 @@ def user_session_serializer(input) -> dict:
         "meter_address": input["meter_address"],
         "meter_package": input["meter_package"],
         "user_meter_number": input["user_meter_number"],
+        "meter_distribution": input["meter_distribution"],
         "user_amount": input["user_amount"],
         "user_confirm": input["user_confirm"],
         "payment_mode": input["payment_mode"],
-        "user_order_id": input["user_order_id"],
         "transaction_reference": input["transaction_reference"],
         "created_at": str(input["created_at"]),
         "user_profile": input["user_profile"]
@@ -53,10 +53,11 @@ def order_serializer(input) -> dict:
         "meter_address": input["meter_address"],
         "meter_package": input["meter_package"],
         "user_amount": input["user_amount"],
+        "token": input["token"],
+        "units": input["units"],
         "payment_confirmation": input["payment_confirmation"],
         "unit_confirmation": input["unit_confirmation"],
         "payment_mode": input["payment_mode"],
-        "user_order_id": input["user_order_id"],
         "transaction_reference": input["transaction_reference"],
         "created_at": str(input["created_at"])
     }
