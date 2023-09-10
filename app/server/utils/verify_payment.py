@@ -30,7 +30,7 @@ async def verify_payment(transaction_reference, transaction_status):
             "user_meter_number": chat_payment_reference["user_meter_number"],
             "meter_owner": chat_payment_reference["meter_owner"],
             "meter_address": chat_payment_reference["meter_address"],
-            "meter_package": chat_payment_reference["meter_package"],
+            "meter_type": chat_payment_reference["meter_type"],
             "user_amount": chat_payment_reference["user_amount"],
             "payment_confirmation": "PAID",
             "unit_confirmation": "Failed",
@@ -43,7 +43,7 @@ async def verify_payment(transaction_reference, transaction_status):
          payment_message = order_confirmation(order["_id"])
 
          send_whatsapp_message(chat_payment_reference["user_phone_number"], payment_message)
-         message = order_failed(chat_payment_reference["user_order_id"])
+         message = order_failed(chat_payment_reference["_id"])
          send_whatsapp_message(chat_payment_reference["user_phone_number"], message)
 
       elif electricity_response == "Successfull":
@@ -53,7 +53,7 @@ async def verify_payment(transaction_reference, transaction_status):
             "user_meter_number": chat_payment_reference["user_meter_number"],
             "meter_owner": chat_payment_reference["meter_owner"],
             "meter_address": chat_payment_reference["meter_address"],
-            "meter_package": chat_payment_reference["meter_package"],
+            "meter_type": chat_payment_reference["meter_type"],
             "user_amount": chat_payment_reference["user_amount"],
             "payment_confirmation": "PAID",
             "unit_confirmation": "Successfull",

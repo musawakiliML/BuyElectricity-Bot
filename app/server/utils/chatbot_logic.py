@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 from app.server.utils.messages import *
 from app.server.utils.whatsapp import send_whatsapp_message
 from app.server.utils.payment import init_transaction, init_bank_transfer
+from app.server.utils.vtpass_functions import vtpass, credentials
 
 from app.server.models.chatbot_models import (
     UserSchema,
@@ -95,46 +96,72 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
         if chat["user_input_1"]:
             if chat["user_input_2"]:
                 if chat["user_meter_number"]:
-                    if chat["user_amount"]:
-                        if chat["user_confirm"]:
-                            if text in quit_inputs:
-                                message = quit_chat()
-                                await delete_single_session(phoneid)
-                                send_whatsapp_message(phonenumber, message)
-                            else:
-                                message = "We are Already Processing Your Order!!!"
-                                send_whatsapp_message(phonenumber, message)
-                        else:
-                            try:
-                                check_type = int(text.replace(' ', ''))
-                                if check_type == 1:
-                                    update_data = ["user_confirm", text]
-                                    data = await update_user_session(update_data, phoneid)
-                                    # Generate Payment Details
-
-                                    # Initialize Transaction
-                                    transaction_reference = init_transaction(
-                                        int(data["user_amount"])
-                                    )
-                                    # Save Transaction reference
-                                    await update_user_session(["transaction_reference", transaction_reference], phoneid)
-
-                                    # Get Bank Transfer Details
-                                    bank_transfer_details = init_bank_transfer(transaction_reference)
-
-                                    account_number = bank_transfer_details['Account Number']
-                                    account_name = bank_transfer_details['Account Name']
-                                    bank_name = bank_transfer_details['Bank Name']
-                    
-                                    message = order_payment(data["user_amount"], account_number, account_name, bank_name)
-                                    await update_user_session(["payment_mode", "Bank Transfer"], phoneid)
-                                    send_whatsapp_message(phonenumber, message)
-                                elif check_type == 2:
+                    if chat["meter_type"]:
+                        if chat["user_amount"]:
+                            if chat["user_confirm"]:
+                                if text in quit_inputs:
                                     message = quit_chat()
                                     await delete_single_session(phoneid)
                                     send_whatsapp_message(phonenumber, message)
                                 else:
-                                    message = "Oops 😓 Please Enter a Valid Input:"
+                                    message = "We are Already Processing Your Order!!!"
+                                    send_whatsapp_message(phonenumber, message)
+                            else:
+                                try:
+                                    check_type = int(text.replace(' ', ''))
+                                    if check_type == 1:
+                                        update_data = ["user_confirm", text]
+                                        data = await update_user_session(update_data, phoneid)
+                                        # Generate Payment Details
+
+                                        # Initialize Transaction
+                                        transaction_reference = init_transaction(
+                                            int(data["user_amount"])
+                                        )
+                                        # Save Transaction reference
+                                        await update_user_session(["transaction_reference", transaction_reference], phoneid)
+
+                                        # Get Bank Transfer Details
+                                        bank_transfer_details = init_bank_transfer(transaction_reference)
+
+                                        account_number = bank_transfer_details['Account Number']
+                                        account_name = bank_transfer_details['Account Name']
+                                        bank_name = bank_transfer_details['Bank Name']
+                        
+                                        message = order_payment(data["user_amount"], account_number, account_name, bank_name)
+                                        await update_user_session(["payment_mode", "Bank Transfer"], phoneid)
+                                        send_whatsapp_message(phonenumber, message)
+                                    elif check_type == 2:
+                                        message = quit_chat()
+                                        await delete_single_session(phoneid)
+                                        send_whatsapp_message(phonenumber, message)
+                                    else:
+                                        message = "Oops 😓 Please Enter a Valid Input:"
+                                        send_whatsapp_message(phonenumber, message)
+                                except:
+                                    if text in quit_inputs:
+                                        message = quit_chat()
+                                        send_whatsapp_message(phonenumber, message)
+                                        await delete_single_session(phoneid)
+                                    else:
+                                        message = "Oops 😓 Please Enter a Valid Amount:"
+                                        send_whatsapp_message(phonenumber, message)
+                        else:
+                            try:
+                                check_type = int(text.replace(' ',''))
+                                if check_type >= 1000:
+                                    update_data = ["user_amount", text]
+                                    data = await update_user_session(update_data, phoneid)
+                                    message = order_summary(
+                                            data["meter_owner"],
+                                            data["user_amount"],
+                                            data["user_meter_number"],
+                                            data["meter_type"],
+                                            data["meter_address"]
+                                    )
+                                    send_whatsapp_message(phonenumber, message)
+                                else:
+                                    message = "Oops 😓 Please Enter a Valid Amount:"
                                     send_whatsapp_message(phonenumber, message)
                             except:
                                 if text in quit_inputs:
@@ -146,17 +173,17 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                                     send_whatsapp_message(phonenumber, message)
                     else:
                         try:
-                            check_type = int(text.replace(' ',''))
-                            if check_type >= 1000:
-                                update_data = ["user_amount", text]
-                                data = await update_user_session(update_data, phoneid)
-                                message = order_summary(
-                                        data["meter_owner"],
-                                        data["user_amount"],
-                                        data["user_meter_number"],
-                                        data["meter_package"],
-                                        data["meter_address"]
-                                )
+                            check_type = int(text.replace(' ', ''))
+                            if check_type == 1:
+                                await update_user_session(["meter_type", "prepaid"], phoneid)
+                                message = bill_amount()
+                                send_whatsapp_message(phonenumber, message)
+                                meter_details = vtpass.verify_meter(1111111111111, "ikeja-electric", "prepaid", credentials)
+                                await update_user_session(["meter_owner", meter_details['content']['Customer_Name']], phoneid)
+                                await update_user_session(["meter_address",meter_details['content']['Address']], phoneid)
+                            elif check_type == 2:
+                                await update_user_session(["meter_type", "postpaid"], phoneid)
+                                message = bill_amount()
                                 send_whatsapp_message(phonenumber, message)
                             else:
                                 message = "Oops 😓 Please Enter a Valid Amount:"
@@ -167,17 +194,14 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                                 send_whatsapp_message(phonenumber, message)
                                 await delete_single_session(phoneid)
                             else:
-                                message = "Oops 😓 Please Enter a Valid Amount:"
+                                message = "Oops 😓 Please Enter a Valid Input"
                                 send_whatsapp_message(phonenumber, message)
                 else:
                     try:
                         if len(text) == 13:
                             update_data = ["user_meter_number", text]
                             await update_user_session(update_data, phoneid)
-                            # Validate Meter Number
-                            
-                            
-                            message = bill_amount()
+                            message = meter_type()
                             send_whatsapp_message(phonenumber, message)
                         else:
                             message = "Oops 😓 Please Enter a Valid Meter Number:"
@@ -285,3 +309,4 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
     else:
         update_data = ["entry_message", opening_msg]
         await update_user_session(update_data, phoneid)
+        print("After First update")

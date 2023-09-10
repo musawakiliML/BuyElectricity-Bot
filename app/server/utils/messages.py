@@ -15,6 +15,10 @@ def meter_number():
 
     return message
 
+def meter_type():
+    message = f"Please Select Your Meter Type:\n{emojize(':one:', language='alias')} Prepaid\n{emojize(':two:', language='alias')} Postpaid"
+    return message
+
 def bill_amount():
     message = f"Great! how much {emojize(':battery:', language='alias')} electricity unit (in naira) do you want to buy {emojize(':dollar:', language='alias')}?\n\n{emojize(':heavy_exclamation_mark:', language='alias')}Note: The minimun order amount should be N1000.0\nA service fee of N100 will be added to the amount."
 
@@ -31,17 +35,17 @@ def order_payment(amount: str, account_number: int, account_name: str, bank_name
     return message
 
 def order_confirmation(order_id: str):
-    message = f"Fantastic!! Your order has been recieved.✅\n\n\tOrder Id:{order_id}\n⌛ We are processing it."
+    message = f"Fantastic!! Your order has been recieved.✅\n\n\tOrder Id:*{order_id}*\n⌛ We are processing it."
 
     return message
 
 def order_successful(meter_unit: str, order_id: str, meter_number: str, meter_token: str):
-    message = f"Your Order was successful!! 🎉\n You can get the details below:\n\n\tToken:{meter_token}\n\tOrder Id: {order_id}\n\tUnits: {meter_unit}\n\tMeter Number: {meter_number}\n\nThank you for choosing EnergiEase!🤗"
+    message = f"Your Order was successful!! 🎉\n You can get the details below:\n\n\tToken:{meter_token}\n\tOrder Id: *{order_id}*\n\tUnits: {meter_unit}\n\tMeter Number: {meter_number}\n\nThank you for choosing EnergiEase!🤗"
 
     return message
 
 def order_failed(order_id: str):
-    message = f"OOPs ❌ Your order has failed!!\n Please Contact Support through email with your Order Id:{order_id}. support@energieasebot.ng"
+    message = f"OOPs ❌ Your order has failed!!\n Please Contact Support through email with your Order Id:*{order_id}*. support@energieasebot.ng"
     return message
 
 def customer_support():

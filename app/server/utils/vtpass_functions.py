@@ -1,4 +1,4 @@
-from vtpass import VTPASS, VTPASSCredentials
+from app.server.utils.vtpass import VTPASS, VTPASSCredentials
 
 from app.server.config.config import Settings
 
@@ -14,6 +14,6 @@ credentials = vtpass_credentials.credentials()
 
 vtpass = VTPASS()
 
-verify_meter = vtpass.verify_meter(1111111111111, "ikeja-electric", "prepaid",credentials)
+# verify_meter = vtpass.verify_meter(1111111111111, "ikeja-electric", "prepaid",credentials)
 
-print(verify_meter)
+# print(verify_meter)
