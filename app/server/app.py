@@ -17,3 +17,8 @@ app.add_middleware(
 
 app.include_router(Webhhook_router, tags=["WhatsApp Webhooks"], prefix='/buyelectricityhook')
 app.include_router(Monnify_Router, tags=["Monnify Webhook"], prefix='/monnifywebhook')
+
+
+@app.get("/")
+async def start_bot():
+    return {"message":"Welcome to EnergiEase: Your Journey to Smarter Energy Choices"}
