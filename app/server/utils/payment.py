@@ -1,6 +1,6 @@
 from app.server.utils.monnify_payment import MonnifyCredential, Monnify
 from app.server.config.config import Settings
-import uuid
+import uuid6
 import json
 
 reserve = Monnify()
@@ -18,7 +18,7 @@ token = merchant_credential.get_token()
 
 def init_transaction(amount: float):
     
-    paymentReference = str(uuid.uuid1())
+    paymentReference = str(uuid6.uuid7())
     paymentReference = json.dumps(paymentReference, default=str)
 
     transaction = reserve.one_time_payment(credentials=merchant_credential.credentials(), amount=amount, customerName="EnergiEase Bot Customer", customerEmail="payment@energieasebot.ng", paymentReference=paymentReference, paymentDescription="Electricity Transaction", redirectUrl="", paymentMethods=["ACCOUNT_TRANSFER"])
