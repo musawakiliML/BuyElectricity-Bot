@@ -17,13 +17,13 @@ vtpass = VTPASS()
 # verify_meter = vtpass.verify_meter(1111111111111, "ikeja-electric", "prepaid",credentials)
 
 # print(verify_meter)
-"ikeja-electric"
-"eko-electric"
-"kano-electric"
-"portharcourt-electric"
-"jos-electric"
-"ibadan-electric"
-"kaduna-electric"
-"abuja-electric"
-"enugu-electric"
-"benin-electric"
+# "ikeja-electric"
+# "eko-electric"
+# "kano-electric"
+# "portharcourt-electric"
+# "jos-electric"
+# "ibadan-electric"
+# "kaduna-electric"
+# "abuja-electric"
+# "enugu-electric"
+# "benin-electric"
