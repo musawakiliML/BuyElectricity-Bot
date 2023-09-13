@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 # API Routes
 from app.server.api.v1.endpoints.whatsapp_hook import router as Webhhook_router
