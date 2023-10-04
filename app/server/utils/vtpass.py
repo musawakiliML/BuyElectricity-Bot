@@ -36,77 +36,89 @@ class VTPASS:
       pass
    
    def get_balance(self, credentials):
-      live = credentials[3]
-      if live == True or live == False:
-         baseurl = GetBaseUrl(live).urls()
-         url = f"{baseurl}/balance"
-         payload = {}
-         headers = {
-                'api-key': credentials[0],
-                'public-key': credentials[1],
-                'Content-Type': 'application/json'
-            }
-         response = requests.request('GET', url, headers=headers, data=json.dumps(payload))
-         response_dict = json.loads(response.text)
-         return response_dict
+      try:
+         live = credentials[3]
+         if live == True or live == False:
+            baseurl = GetBaseUrl(live).urls()
+            url = f"{baseurl}/balance"
+            payload = {}
+            headers = {
+                  'api-key': credentials[0],
+                  'public-key': credentials[1],
+                  'Content-Type': 'application/json'
+               }
+            response = requests.request('GET', url, headers=headers, data=json.dumps(payload))
+            response_dict = json.loads(response.text)
+            return response_dict
+      except Exception as e:
+         raise {"message":str(e)}
    
    def verify_meter(self, billersCode, serviceID, meter_type, credentials):
-      live = credentials[3]
-      if live == True or live == False:
-         baseurl = GetBaseUrl(live).urls()
-         url = f"{baseurl}/merchant-verify"
-         payload = {
-            "billersCode":billersCode,
-            "serviceID":serviceID,
-            "type":meter_type
-         }
-         headers = {
-                'api-key': credentials[0],
-                'secret-key': credentials[2],
-                'Content-Type': 'application/json'
+      try:
+         live = credentials[3]
+         if live == True or live == False:
+            baseurl = GetBaseUrl(live).urls()
+            url = f"{baseurl}/merchant-verify"
+            payload = {
+               "billersCode":billersCode,
+               "serviceID":serviceID,
+               "type":meter_type
             }
-         response = requests.request('POST', url, headers=headers, data=json.dumps(payload))
+            headers = {
+                  'api-key': credentials[0],
+                  'secret-key': credentials[2],
+                  'Content-Type': 'application/json'
+               }
+            response = requests.request('POST', url, headers=headers, data=json.dumps(payload))
 
-         response_dict = json.loads(response.text)
-         return response_dict
+            response_dict = json.loads(response.text)
+            return response_dict
+      except Exception as e:
+         raise {"message":str(e)}
 
    def purchase_electricity_unit(self, request_id: str, serviceID: str, billersCode: str, variation_code: str, amount: int, phone, credentials):
-      live = credentials[3]
-      if live == True or live == False:
-         baseurl = GetBaseUrl(live).urls()
-         url = f"{baseurl}/pay"
-         payload = {
-            "request_id":request_id,
-            "serviceID":serviceID,
-            "billersCode":billersCode,
-            "variation_code":variation_code,
-            "amount":amount,
-            "phone":phone
-         }
-         headers = {
-                'api-key': credentials[0],
-                'secret-key': credentials[2],
-                'Content-Type': 'application/json'
+      try:
+         live = credentials[3]
+         if live == True or live == False:
+            baseurl = GetBaseUrl(live).urls()
+            url = f"{baseurl}/pay"
+            payload = {
+               "request_id":request_id,
+               "serviceID":serviceID,
+               "billersCode":billersCode,
+               "variation_code":variation_code,
+               "amount":amount,
+               "phone":phone
             }
-         response = requests.request('POST', url, headers=headers, data=json.dumps(payload))
+            headers = {
+                  'api-key': credentials[0],
+                  'secret-key': credentials[2],
+                  'Content-Type': 'application/json'
+               }
+            response = requests.request('POST', url, headers=headers, data=json.dumps(payload))
 
-         response_dict = json.loads(response.text)
-         return response_dict
+            response_dict = json.loads(response.text)
+            return response_dict
+      except Exception as e:
+         raise {"message":str(e)}
 
    def transaction_status(self, request_id, credentials):
-      live = credentials[3]
-      if live == True or live == False:
-         baseurl = GetBaseUrl(live).urls()
-         url = f"{baseurl}/requery"
-         payload = {
-            "request_id":request_id
-         }
-         headers = {
-                'api-key': credentials[0],
-                'secret-key': credentials[2],
-                'Content-Type': 'application/json'
+      try:
+         live = credentials[3]
+         if live == True or live == False:
+            baseurl = GetBaseUrl(live).urls()
+            url = f"{baseurl}/requery"
+            payload = {
+               "request_id":request_id
             }
-         response = requests.request('POST', url, headers=headers, data=json.dumps(payload))
+            headers = {
+                  'api-key': credentials[0],
+                  'secret-key': credentials[2],
+                  'Content-Type': 'application/json'
+               }
+            response = requests.request('POST', url, headers=headers, data=json.dumps(payload))
 
-         response_dict = json.loads(response.text)
-         return response_dict
+            response_dict = json.loads(response.text)
+            return response_dict
+      except Exception as e:
+         raise {"message":str(e)}

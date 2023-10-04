@@ -1,6 +1,8 @@
 from app.server.utils.vtpass import VTPASS, VTPASSCredentials
 
 from app.server.config.config import Settings
+from uuid6 import uuid7
+from datetime import datetime
 
 settings = Settings()
 
@@ -14,16 +16,7 @@ credentials = vtpass_credentials.credentials()
 
 vtpass = VTPASS()
 
-# verify_meter = vtpass.verify_meter(1111111111111, "ikeja-electric", "prepaid",credentials)
-
-# print(verify_meter)
-# "ikeja-electric"
-# "eko-electric"
-# "kano-electric"
-# "portharcourt-electric"
-# "jos-electric"
-# "ibadan-electric"
-# "kaduna-electric"
-# "abuja-electric"
-# "enugu-electric"
-# "benin-electric"
+def generated_request_id():
+    date_time_id = datetime.now().strftime('%Y%m%d%H%M')
+    reference_id = str(uuid7()).split("-")[4]
+    return date_time_id + reference_id

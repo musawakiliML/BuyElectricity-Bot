@@ -175,16 +175,67 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                         try:
                             check_type = int(text.replace(' ', ''))
                             if check_type == 1:
-                                await update_user_session(["meter_type", "prepaid"], phoneid)
+                                data = await update_user_session(["meter_type", "prepaid"], phoneid)
                                 message = bill_amount()
                                 send_whatsapp_message(phonenumber, message)
-                                meter_details = vtpass.verify_meter(1111111111111, "ikeja-electric", "prepaid", credentials)
+                                meter_number = data["user_meter_number"]
+                                meter_type = data["meter_type"]
+                                test_number = 1111111111111
+                                if data["meter_distribution"] == "IKEDC":
+                                    billers_id = "ikeja-electric"
+                                elif data["meter_distribution"] == "AEDC":
+                                    billers_id = "abuja-electric"
+                                elif data["meter_distribution"] == "EEDC":
+                                    billers_id = "enugu-electric"
+                                elif data["meter_distribution"] == "EKEDC":
+                                    billers_id = "eko-electric"
+                                elif data["meter_distribution"] == "IBEDCO":
+                                    billers_id = "ibadan-electric"
+                                elif data["meter_distribution"] == "JED":
+                                    billers_id = "jos-electric"
+                                elif data["meter_distribution"] == "KAEDCO":
+                                    billers_id = "kano-electric"
+                                elif data["meter_distribution"] == "KEDCO":
+                                    billers_id = "kaduna-electric"
+                                elif data["meter_distribution"] == "PHED":
+                                    billers_id = "portharcourt-electric"
+                                elif data["meter_distribution"] == "BEDC":
+                                    billers_id = "benin-electric"
+
+                                meter_details = vtpass.verify_meter(test_number, billers_id, meter_type, credentials)
                                 await update_user_session(["meter_owner", meter_details['content']['Customer_Name']], phoneid)
                                 await update_user_session(["meter_address",meter_details['content']['Address']], phoneid)
                             elif check_type == 2:
-                                await update_user_session(["meter_type", "postpaid"], phoneid)
+                                data = await update_user_session(["meter_type", "postpaid"], phoneid)
                                 message = bill_amount()
                                 send_whatsapp_message(phonenumber, message)
+                                meter_number = data["user_meter_number"]
+                                meter_type = data["meter_type"]
+                                test_number = 1010101010101
+                                if data["meter_distribution"] == "IKEDC":
+                                    billers_id = "ikeja-electric"
+                                elif data["meter_distribution"] == "AEDC":
+                                    billers_id = "abuja-electric"
+                                elif data["meter_distribution"] == "EEDC":
+                                    billers_id = "enugu-electric"
+                                elif data["meter_distribution"] == "EKEDC":
+                                    billers_id = "eko-electric"
+                                elif data["meter_distribution"] == "IBEDCO":
+                                    billers_id = "ibadan-electric"
+                                elif data["meter_distribution"] == "JED":
+                                    billers_id = "jos-electric"
+                                elif data["meter_distribution"] == "KAEDCO":
+                                    billers_id = "kano-electric"
+                                elif data["meter_distribution"] == "KEDCO":
+                                    billers_id = "kaduna-electric"
+                                elif data["meter_distribution"] == "PHED":
+                                    billers_id = "portharcourt-electric"
+                                elif data["meter_distribution"] == "BEDC":
+                                    billers_id = "benin-electric"
+
+                                meter_details = vtpass.verify_meter(test_number, billers_id, meter_type, credentials)
+                                await update_user_session(["meter_owner", meter_details['content']['Customer_Name']], phoneid)
+                                await update_user_session(["meter_address",meter_details['content']['Address']], phoneid)
                             else:
                                 message = "Oops 😓 Please Enter a Valid Amount:"
                                 send_whatsapp_message(phonenumber, message)
@@ -271,6 +322,12 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                         message = meter_number()
                         await update_user_session(["meter_distribution", "PHED"], phoneid)
                         send_whatsapp_message(phonenumber, message)
+                    elif check_type == 10:
+                        update_data = ["user_input_2", text]
+                        await update_user_session(update_data, phoneid)
+                        message = meter_number()
+                        await update_user_session(["meter_distribution", "BEDC"], phoneid)
+                        send_whatsapp_message(phonenumber, message)
                     else:
                         message = "Oops 😓 Please Enter a Number:"
                         send_whatsapp_message(phonenumber, message)
@@ -309,4 +366,4 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
     else:
         update_data = ["entry_message", opening_msg]
         await update_user_session(update_data, phoneid)
-        print("After First update")
+        # print("After First update")
