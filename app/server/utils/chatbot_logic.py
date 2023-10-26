@@ -257,7 +257,7 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                         else:
                             message = "Oops 😓 Please Enter a Valid Meter Number:"
                             send_whatsapp_message(phonenumber, message)
-                    except:
+                    except Exception as e:
                         if text in quit_inputs:
                             message = quit_chat()
                             send_whatsapp_message(phonenumber, message)
@@ -331,7 +331,7 @@ async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
                     else:
                         message = "Oops 😓 Please Enter a Number:"
                         send_whatsapp_message(phonenumber, message)
-                except:
+                except Exception as e:
                     if text in quit_inputs:
                         message = quit_chat()
                         send_whatsapp_message(phonenumber, message)

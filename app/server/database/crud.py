@@ -53,7 +53,6 @@ async def add_user_session(user_session_data: UserSessionSchema):
             return user_session_serializer(new_user_session)
     except Exception as e:
         print(f"Error in add_user_session: {str(e)}")
-        raise
 
 # Update User session
 
@@ -70,7 +69,6 @@ async def update_user_session(user_session_data: list, session_id: str):
             return {"Message":f'No post with this id: {id} found'}
     except Exception as e:
         print(f"Error in update_user_session: {str(e)}")
-        raise 
 
 # delete single session
 
