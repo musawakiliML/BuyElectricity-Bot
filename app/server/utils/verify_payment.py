@@ -58,8 +58,9 @@ async def verify_payment(transaction_reference, transaction_status):
          try:
             if electricity_response["code"] == "000":
                if electricity_response["content"]["transactions"]["status"] == "delivered":
-                  tokens = str(electricity_response["token"].split(':')[1])
-                  units = electricity_response["units"]
+                  # print(electricity_response)
+                  tokens = electricity_response["Token"]
+                  units = electricity_response["PurchasedUnits"]
                   electricity_order = {
                      "user_profile":user_profile,
                      "meter_distribution": chat_payment_reference["meter_distribution"],
