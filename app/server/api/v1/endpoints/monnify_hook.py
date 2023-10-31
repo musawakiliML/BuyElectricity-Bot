@@ -75,23 +75,32 @@ async def process_webhook(request: Request):
     """
 
    #  Headers({'host': 'living-optimal-seahorse.ngrok-free.app', 'user-agent': 'okhttp/3.12.2', 'content-length': '871', 'accept-encoding': 'gzip', 'apihost': 'https://living-optimal-seahorse.ngrok-free.app/monnifywebhook/', 'content-type': 'application/json;charset=UTF-8', 'monnify-signature': '4277c62ed3791f07efef0cc4ac14b87cb3b1307efbc3eb5ddd381897a34ae619fd5ee0ae1acdce68c2a0e7578bf37cb76f80a73ef9b72e98b80b9e072b7b9e79', 'x-forwarded-for': '35.242.133.146', 'x-forwarded-proto': 'https'})
-
+    
     payload_in_bytes = await request.body()
    #  print(request.headers.get("monnify-signature"))
     monnify_hash = request.headers["monnify-signature"]
     confirmation = verify_monnify_webhook(payload_in_bytes, monnify_hash, request.headers)
-    print(request.headers)
+    request_body = await request.json()
+    # print(request.headers)
 
-    if confirmation is False:
-        return JSONResponse(
-            content={"status": "failed", "msg": "Webhook does not appear to come from Monnify"},
-            status_code=status.HTTP_400_BAD_REQUEST)
-    else:
+    # with open("headers.json", "w") as f:
+    #     json.dump(dict(request.headers), f)
+    
+    # with open('request_body.json', "w") as fil:
+    #     json.dump(request_body, fil)
+
+    # if confirmation is False:
+    #     return JSONResponse(
+    #         content={"status": "failed", "msg": "Webhook does not appear to come from Monnify"},
+    #         status_code=status.HTTP_400_BAD_REQUEST)
+    # else:
+    if request_body:
         """
         if payload verification is successful, you can perform your necessary task, but if your planned processing would take time, you should first return a 200 response and process your stuff in background.
         """
         
-        transaction_details = json.loads(payload_in_bytes)
+        # transaction_details = json.loads(payload_in_bytes)
+        transaction_details = request_body
         #print(json.loads(payload_in_bytes))
 
         if transaction_details['eventType'] == "SUCCESSFUL_TRANSACTION":

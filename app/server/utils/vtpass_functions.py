@@ -3,6 +3,7 @@ from app.server.utils.vtpass import VTPASS, VTPASSCredentials
 from app.server.config.config import Settings
 from uuid6 import uuid7
 from datetime import datetime
+import pytz
 
 settings = Settings()
 
@@ -17,6 +18,7 @@ credentials = vtpass_credentials.credentials()
 vtpass = VTPASS()
 
 def generated_request_id():
-    date_time_id = datetime.now().strftime('%Y%m%d%H%M')
+    lagos_timezone = pytz.timezone('Africa/Lagos')
+    date_time_id = datetime.now(lagos_timezone).strftime('%Y%m%d%H%M')
     reference_id = str(uuid7()).split("-")[4]
     return date_time_id + reference_id

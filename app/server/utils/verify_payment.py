@@ -1,5 +1,6 @@
 # Verify Payment and Create Order
 from datetime import datetime
+import json
 from app.server.utils.messages import *
 from app.server.utils.whatsapp import send_whatsapp_message
 from app.server.utils.vtpass_functions import vtpass, credentials, generated_request_id
@@ -54,13 +55,17 @@ async def verify_payment(transaction_reference, transaction_status):
          # Get User Profile
          user_profile = await get_user_profile(chat_payment_reference['session_id'])
 
+         with open("electricity.json", "w") as f:
+            json.dump(electricity_response, f)
+
          # Create order detail
          try:
             if electricity_response["code"] == "000":
                if electricity_response["content"]["transactions"]["status"] == "delivered":
-                  print(electricity_response)
+                  # print(electricity_response)
                   # tokens = str(electricity_response["Token"].split(':')[1])
                   # units = electricity_response["units"]
+
                   tokens = electricity_response["Token"]
                   units = electricity_response["PurchasedUnits"]
 
@@ -122,7 +127,7 @@ async def verify_payment(transaction_reference, transaction_status):
                message = order_failed(chat_payment_reference["_id"])
                send_whatsapp_message(chat_payment_reference["user_phone_number"], message)
          except Exception as e:
-            raise {"message": str(e)}
-         return True
+            raise Exception({"message": str(e)})
+         # return True
    except Exception as e:
-      raise {"message": str(e)}
+      raise Exception({"message": str(e)})
