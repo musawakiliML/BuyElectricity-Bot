@@ -80,6 +80,8 @@ async def process_webhook(request: Request):
    #  print(request.headers.get("monnify-signature"))
     monnify_hash = request.headers["monnify-signature"]
     confirmation = verify_monnify_webhook(payload_in_bytes, monnify_hash, request.headers)
+    print(request.headers)
+
     if confirmation is False:
         return JSONResponse(
             content={"status": "failed", "msg": "Webhook does not appear to come from Monnify"},
