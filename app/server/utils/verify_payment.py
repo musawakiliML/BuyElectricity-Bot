@@ -3,7 +3,7 @@ from datetime import datetime
 import json
 from app.server.utils.messages import *
 from app.server.utils.whatsapp import send_whatsapp_message
-from app.server.utils.vtpass_functions import vtpass, credentials, generated_request_id
+from app.server.utils.vtpass_functions import vtpass, credentials, generated_request_id, get_token_units
 
 from app.server.database.crud import (
     get_single_session_transaction,
@@ -55,8 +55,8 @@ async def verify_payment(transaction_reference, transaction_status):
          # Get User Profile
          user_profile = await get_user_profile(chat_payment_reference['session_id'])
 
-         with open("electricity.json", "w") as f:
-            json.dump(electricity_response, f)
+         # with open("electricity.json", "w") as f:
+         #    json.dump(electricity_response, f)
 
          # Create order detail
          try:
@@ -65,9 +65,9 @@ async def verify_payment(transaction_reference, transaction_status):
                   # print(electricity_response)
                   # tokens = str(electricity_response["Token"].split(':')[1])
                   # units = electricity_response["units"]
-
-                  tokens = electricity_response["Token"]
-                  units = electricity_response["PurchasedUnits"]
+                  token_units_response = get_token_units(electricity_response, chat_payment_reference["meter_distribution"])
+                  tokens = token_units_response['tokens']
+                  units = token_units_response['units']
 
                   electricity_order = {
                      "user_profile":user_profile,
