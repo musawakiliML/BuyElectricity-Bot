@@ -56,3 +56,11 @@ def check_transaction_status(transactionReference: str) -> str:
                 "message": "Pending"
             }
             return data
+
+
+
+# test = init_transaction(1000.0)
+# print(test)
+
+# tes = init_bank_transfer("MNFY|47|20240526174608|000133")
+# print(tes)
