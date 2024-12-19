@@ -27,6 +27,7 @@ from app.server.database.crud import (
 )
 
 async def handle_whatsapp_chat(phonenumber, text, profilename, phoneid):
+    
     try:
     #    print("Here")
        # Check if session exists
